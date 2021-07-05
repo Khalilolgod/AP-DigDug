@@ -1,11 +1,22 @@
 package ir.ac.kntu;
 
+import ir.ac.kntu.model.Map;
+import ir.ac.kntu.view.GameAssets;
+import ir.ac.kntu.view.GraphicsConsts;
+import ir.ac.kntu.view.scenes.GameScene;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
 
 public class JavaFxApplication extends Application {
 
@@ -13,18 +24,36 @@ public class JavaFxApplication extends Application {
         launch(args);
     }
 
-    public void start(Stage stage) throws Exception {
-        Pane root = new Pane();
-        root.setStyle("-fx-border-width: 0 0 5 0;");
-        Scene scene = new Scene(root, 800, 600, Color.rgb(240, 240, 240));
-        
-    
+    public void start(Stage stage) {
 
-        // Setting stage properties
+        Map map = new Map();
+        //GameAssets.getInstance().loadAssets();
+        GameScene gameScene = new GameScene(map);
+
         stage.initStyle(StageStyle.UTILITY);
-        stage.setTitle("DigDig");
-        
-        stage.setScene(scene);
+        stage.setTitle("DigDug");
+
+        stage.setScene(gameScene.getScene());
+
+        // longrunning operation runs on different thread
+        Thread thread = new Thread(() -> {
+
+            Runnable updater = () -> gameScene.gridPaneUpdater();
+            while (true) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException ex) {
+                }
+                // UI update is run on the Application thread
+                Platform.runLater(updater);
+            }
+        });
+        // don't let thread prevent JVM shutdown
+        thread.setDaemon(true);
+        thread.start();
+
         stage.show();
+        //gameScene.gridPaneUpdater();
+
     }
 }
