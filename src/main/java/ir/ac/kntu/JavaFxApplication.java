@@ -1,5 +1,6 @@
 package ir.ac.kntu;
 
+import ir.ac.kntu.model.Enemy;
 import ir.ac.kntu.model.Map;
 import ir.ac.kntu.view.GameAssets;
 import ir.ac.kntu.view.GraphicsConsts;
@@ -48,9 +49,26 @@ public class JavaFxApplication extends Application {
                 Platform.runLater(updater);
             }
         });
+        Thread enemymoving = new Thread(() -> {
+            Runnable updater = () -> {
+                for(Enemy e : Map.getEnemies()){
+                    e.getEnemyController().move();
+                }
+            };
+            while (true) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                }
+                // UI update is run on the Application thread
+                Platform.runLater(updater);
+            }
+        });
         // don't let thread prevent JVM shutdown
         thread.setDaemon(true);
         thread.start();
+        enemymoving.setDaemon(true);
+        enemymoving.start();
 
         stage.show();
         //gameScene.gridPaneUpdater();
