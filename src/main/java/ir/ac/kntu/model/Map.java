@@ -14,7 +14,10 @@ public class Map implements Observer{
     public final char emptyChar = ' ';
     public final char stoneChar = 's';
     public final char wallChar = '#';
+    public final char dragonChar = 'E';
+    public final char tomatoChar = 'e';
     private static Digger digger;
+    private static ArrayList<Enemy> enemies = new ArrayList<>();
     private GameObject[][] map;
     private int X_Blocks;
     private int Y_Blocks;
@@ -25,6 +28,14 @@ public class Map implements Observer{
 
     public Map(String fileSource) {
         loadMap(fileSource);
+    }
+
+    public static ArrayList<Enemy> getEnemies() {
+        return enemies;
+    }
+
+    public static void setEnemies(ArrayList<Enemy> enemies) {
+        Map.enemies = enemies;
     }
 
     public void loadMap(String mapFile) {
@@ -55,6 +66,8 @@ public class Map implements Observer{
                 GameObject gameObject = charToGameObject(map.get(i).get(j),i,j);
                 if (gameObject instanceof Digger){
                     digger = (Digger) gameObject;
+                }else if(gameObject instanceof Enemy){
+                    enemies.add((Enemy)gameObject);
                 }
                 this.map[i][j] = gameObject;
             }
@@ -71,6 +84,10 @@ public class Map implements Observer{
                 return new Stone(this,new Point2D(j,i));
             case playerChar:
                 return new Digger(this,new Point2D(j,i),1);
+            case dragonChar:
+                return new Dragon(this,new Point2D(j,i));
+            case tomatoChar:
+                return new Tomato(this,new Point2D(j,i));
             default:
                 return new Wall(this,new Point2D(j,i));
         }
@@ -78,6 +95,10 @@ public class Map implements Observer{
 
     public GameObject getGameObject(Point2D pos){
         return map[(int) pos.getY()][(int) pos.getX()];
+    }
+
+    public boolean isInBounds(Point2D pos){
+        return pos.getX() >= 0 && pos.getX() < getX_Blocks() && pos.getY() < getY_Blocks() && pos.getY() >= 0;
     }
 
     public int getY_Blocks() {

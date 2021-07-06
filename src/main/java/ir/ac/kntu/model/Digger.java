@@ -35,7 +35,8 @@ public class Digger extends GameObject implements Movable,Observable{
     @Override
     public boolean canPass(Direction d) {
         Point2D movedPos = nextPos(d);
-        return map.getGameObject(movedPos) == null || map.getGameObject(movedPos) instanceof Wall;
+        return map.isInBounds(movedPos) && (map.getGameObject(movedPos) == null || map.getGameObject(movedPos) instanceof Wall );
+
     }
 
     @Override
