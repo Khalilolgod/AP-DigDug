@@ -1,14 +1,12 @@
 package ir.ac.kntu.model;
 
-
-import ir.ac.kntu.view.scenes.GameScene;
 import javafx.geometry.Point2D;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Map implements Observer{
+public class Map{
 
     public final char playerChar = 'p';
     public final char emptyChar = ' ';
@@ -17,25 +15,24 @@ public class Map implements Observer{
     public final char dragonChar = 'E';
     public final char tomatoChar = 'e';
     private static Digger digger;
-    private static ArrayList<Enemy> enemies = new ArrayList<>();
+    private ArrayList<Enemy> enemies = new ArrayList<>();
     private GameObject[][] map;
     private int X_Blocks;
     private int Y_Blocks;
+    Game game;
 
-    public Map() {
+    public Map(Game game) {
+        this.game = game;
+        game.setMap(this);
         loadMap("src/main/resources/maps/map1.txt");
+        game.setMap(this);
     }
 
-    public Map(String fileSource) {
+    public Map(String fileSource,Game game) {
+        this.game = game;
+        game.setMap(this);
         loadMap(fileSource);
-    }
-
-    public static ArrayList<Enemy> getEnemies() {
-        return enemies;
-    }
-
-    public static void setEnemies(ArrayList<Enemy> enemies) {
-        Map.enemies = enemies;
+        game.setMap(this);
     }
 
     public void loadMap(String mapFile) {
@@ -83,11 +80,11 @@ public class Map implements Observer{
             case stoneChar:
                 return new Stone(this,new Point2D(j,i));
             case playerChar:
-                return new Digger(this,new Point2D(j,i),1);
+                return new Digger(this,new Point2D(j,i),1,game);
             case dragonChar:
-                return new Dragon(this,new Point2D(j,i));
+                return new Dragon(this,new Point2D(j,i),game);
             case tomatoChar:
-                return new Tomato(this,new Point2D(j,i));
+                return new Tomato(this,new Point2D(j,i),game);
             default:
                 return new Wall(this,new Point2D(j,i));
         }
@@ -101,6 +98,10 @@ public class Map implements Observer{
         return pos.getX() >= 0 && pos.getX() < getX_Blocks() && pos.getY() < getY_Blocks() && pos.getY() >= 0;
     }
 
+    public ArrayList<Enemy> getEnemies() {
+        return enemies;
+    }
+
     public int getY_Blocks() {
         return Y_Blocks;
     }
@@ -111,13 +112,6 @@ public class Map implements Observer{
 
     public GameObject[][] getMap() {
         return map;
-    }
-
-    @Override
-    public void update(Observable changedObservable,Point2D oldPos ,Point2D newPos) {
-        GameObject gameObject = (GameObject) changedObservable;
-        map[(int) newPos.getY()][(int) newPos.getX()] = gameObject;
-        map[(int) oldPos.getY()][(int) oldPos.getX()] = null;
     }
 
     public void showMap(){

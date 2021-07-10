@@ -14,19 +14,14 @@ public class GameScene {
 
     private Scene scene;
     private Map map;
-    GridPane gridPane ;
+    private GridPane gridPane ;
     public GameScene(Map map){
         this.map = map;
         this.gridPane = new GridPane();
-        makeScene();
+        //makeScene();
     }
 
-    private void makeScene(){
-        gridPaneUpdater();
-        gridPane.setGridLinesVisible(false);
-        scene = new Scene(gridPane, map.getX_Blocks()*GraphicsConsts.CellSize,map.getY_Blocks()*GraphicsConsts.CellSize);
-        EventHandler.getInstance().attachGameEventHandlers(scene);
-    }
+
 
     public void gridPaneUpdater(){
         try{
@@ -84,4 +79,11 @@ public class GameScene {
         this.scene = scene;
     }
 
+    public GridPane getGridPane() {
+        return gridPane;
+    }
+
+    public void setGridPane(GridPane gridPane) {
+        this.gridPane = gridPane;
+    }
 }
