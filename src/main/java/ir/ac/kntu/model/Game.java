@@ -10,7 +10,7 @@ public class Game implements Serializable, Observer {
     private Digger digger;
     private int diggerLives;
     private ArrayList<Enemy> enemies;
-
+    private int time = 0;
     private int highscore;
     private int score;
     private int round;
@@ -179,6 +179,14 @@ public class Game implements Serializable, Observer {
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 
     public void setGameState(GameState gameState) {

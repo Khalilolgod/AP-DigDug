@@ -57,7 +57,7 @@ public class GameWindow {
     void makeLowerPane() {
         down = new Pane();
         down.prefHeight(50);
-        timerL = new Label("0");
+        timerL = new Label(String.valueOf(game.getTime()));
         lives = new Label(String.valueOf(game.getDiggerLives()));
         HBox hBox = new HBox(timerL, lives);
         down.getChildren().add(hBox);
@@ -111,7 +111,8 @@ public class GameWindow {
     private Thread makeTimerThread() {
         Thread timer = new Thread(() -> {
             Runnable updater = () -> {
-                timerL.setText(String.valueOf(Integer.parseInt(timerL.getText()) + 1));
+                game.setTime(game.getTime()+1);
+                timerL.setText(String.valueOf(game.getTime()));
             };
 
             while (true) {
