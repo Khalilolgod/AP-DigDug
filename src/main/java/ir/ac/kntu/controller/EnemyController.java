@@ -11,15 +11,9 @@ public class EnemyController {
     Random random;
 
     public EnemyController(Enemy enemy){
-        this.random = new Random();
+
         this.enemy = enemy;
     }
 
-    Direction directionGen(){
-        return Direction.values()[random.nextInt(Direction.values().length)];
-    }
 
-    public void move(){
-        enemy.move(directionGen());
-    }
 }
