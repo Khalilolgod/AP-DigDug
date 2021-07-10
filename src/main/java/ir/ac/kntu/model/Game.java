@@ -53,9 +53,7 @@ public class Game implements Serializable, Observer {
     }
 
     void finishGame() {
-
         this.gameState = GameState.FINISHED;
-
     }
 
     @Override

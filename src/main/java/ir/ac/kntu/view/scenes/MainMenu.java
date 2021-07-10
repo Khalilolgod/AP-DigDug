@@ -44,14 +44,14 @@ public class MainMenu {
 
         MenuItem newGame = new MenuItem("New Game");
         newGame.setOnMouseClicked(mouseEvent -> {
-            GameWindow gameWindow = initializeGameWindow(stage,false);
+            GameWindow gameWindow = initializeGameWindow(stage, false);
             stage.setScene(gameWindow.getScene());
             gameWindow.run();
             stage.show();
         });
         MenuItem loadGame = new MenuItem("Load Game");
         loadGame.setOnMouseClicked(mouseEvent -> {
-            GameWindow gameWindow = initializeGameWindow(stage,true);
+            GameWindow gameWindow = initializeGameWindow(stage, true);
             stage.setScene(gameWindow.getScene());
             gameWindow.run();
             stage.show();
@@ -69,16 +69,16 @@ public class MainMenu {
         return pane;
     }
 
-    public GameWindow initializeGameWindow(Stage stage ,boolean isLoadingDigger) {
+    public GameWindow initializeGameWindow(Stage stage, boolean isLoadingDigger) {
         String mapPath = FileChooserWrapper.getInstance().showOpenDialog(stage);
         Game game = new Game();
         Map map = new Map(mapPath, game);
-        if(isLoadingDigger){
+        if (isLoadingDigger) {
             String diggerPath = FileChooserWrapper.getInstance().showOpenDialog(stage);
             Digger digger = Digger.loadDigger(diggerPath);
             Map.setDigger(digger);
             game.setDigger(digger);
-            if(digger == null){
+            if (digger == null) {
                 System.out.println("digger is null");
             }
             digger.setObserver(game);

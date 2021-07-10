@@ -185,13 +185,15 @@ public class Point2D implements Serializable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj == this)
+        if (obj == this) {
             return true;
+        }
         if (obj instanceof Point2D) {
             Point2D other = (Point2D) obj;
             return getX() == other.getX() && getY() == other.getY();
-        } else
+        } else {
             return false;
+        }
     }
 
     /**
