@@ -1,5 +1,6 @@
 package ir.ac.kntu.view.scenes;
 
+import ir.ac.kntu.model.Digger;
 import ir.ac.kntu.util.FileChooserWrapper;
 import ir.ac.kntu.model.Game;
 import ir.ac.kntu.model.Map;
@@ -40,19 +41,25 @@ public class MainMenu {
 
         MenuItem itemExit = new MenuItem("EXIT");
         itemExit.setOnMouseClicked(event -> System.exit(0));
+
         MenuItem newGame = new MenuItem("New Game");
         newGame.setOnMouseClicked(mouseEvent -> {
-            String mapPath = FileChooserWrapper.getInstance().showOpenDialog(stage);
-            Game game = new Game();
-            Map map = new Map(mapPath, game);
-            GameWindow gameWindow = new GameWindow(game, stage);
+            GameWindow gameWindow = initializeGameWindow(stage,false);
             stage.setScene(gameWindow.getScene());
             gameWindow.run();
             stage.show();
         });
+        MenuItem loadGame = new MenuItem("Load Game");
+        loadGame.setOnMouseClicked(mouseEvent -> {
+            GameWindow gameWindow = initializeGameWindow(stage,true);
+            stage.setScene(gameWindow.getScene());
+            gameWindow.run();
+            stage.show();
+        });
+
         MenuBox menu = new MenuBox(
                 newGame,
-                new MenuItem("Load Game"),
+                loadGame,
                 new MenuItem("Tutorial"),
                 itemExit);
         menu.setTranslateX(495);
@@ -61,6 +68,24 @@ public class MainMenu {
         pane.getChildren().addAll(title, menu);
         return pane;
     }
+
+    public GameWindow initializeGameWindow(Stage stage ,boolean isLoadingDigger) {
+        String mapPath = FileChooserWrapper.getInstance().showOpenDialog(stage);
+        Game game = new Game();
+        Map map = new Map(mapPath, game);
+        if(isLoadingDigger){
+            String diggerPath = FileChooserWrapper.getInstance().showOpenDialog(stage);
+            Digger digger = Digger.loadDigger(diggerPath);
+            Map.setDigger(digger);
+            game.setDigger(digger);
+            if(digger == null){
+                System.out.println("digger is null");
+            }
+            digger.setObserver(game);
+        }
+        return new GameWindow(game, stage);
+    }
+
 
     public Scene getScene() {
         return scene;
