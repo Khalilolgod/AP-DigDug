@@ -21,10 +21,9 @@ public class Game implements Serializable, Observer {
     public Game() {
         gameState = GameState.RUNNING;
         diggerLives = 3;
-//        this.map = map;
-//        this.digger = digger;
-//        this.highscore = digger.highScore;
     }
+
+
 
     public void updateGame() {
         for (Enemy enemy : enemies) {
@@ -39,44 +38,6 @@ public class Game implements Serializable, Observer {
             }
         }
         return false;
-    }
-
-    public static Game loadGameInfo(String filename) {
-        Game game = null;
-        File file = new File("student.info");
-        try (FileInputStream fileInputStream = new FileInputStream(file);
-             ObjectInputStream input = new ObjectInputStream(fileInputStream)) {
-
-            try {
-                game = (Game) input.readObject();
-            } catch (Exception e) {
-                System.out.println("Problem with some of the records in the Game data file");
-                System.out.println(e.getMessage());
-            }
-
-        } catch (IOException e) {
-            System.out.println("No previous data for this game has been saved.");
-        }
-        return game;
-    }
-
-    public static void saveGameInfo(Game game, String filename) {
-        File file = new File(filename);
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file);
-             ObjectOutputStream output = new ObjectOutputStream(fileOutputStream)) {
-            try {
-                output.writeObject(game);
-            } catch (IOException e) {
-                System.out.println("(Game::saveGameInfo): " +
-                        "An error occurred while trying to save info");
-                System.out.println(e.getMessage());
-            }
-
-        } catch (IOException e) {
-            System.out.println("(Game::saveGameInfo): " +
-                    "An error occurred while trying to save info");
-            System.out.println(e.getMessage());
-        }
     }
 
     private void playerDie() {
