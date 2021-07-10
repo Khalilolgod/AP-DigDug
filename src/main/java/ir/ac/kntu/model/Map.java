@@ -127,28 +127,8 @@ public class Map implements Serializable {
         return digger;
     }
 
-    public char getPlayerChar() {
-        return playerChar;
-    }
-
-    public char getEmptyChar() {
-        return emptyChar;
-    }
-
-    public char getStoneChar() {
-        return stoneChar;
-    }
-
-    public char getWallChar() {
-        return wallChar;
-    }
-
-    public char getDragonChar() {
-        return dragonChar;
-    }
-
-    public char getTomatoChar() {
-        return tomatoChar;
+    public static void setDigger(Digger digger) {
+        Map.digger = digger;
     }
 
     public Game getGame() {
