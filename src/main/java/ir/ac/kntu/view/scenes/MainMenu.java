@@ -1,5 +1,8 @@
 package ir.ac.kntu.view.scenes;
 
+import ir.ac.kntu.FileChooserWrapper;
+import ir.ac.kntu.model.Game;
+import ir.ac.kntu.model.Map;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -8,13 +11,16 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.scene.paint.*;
 import javafx.scene.shape.*;
+import javafx.stage.Stage;
 
 public class MainMenu {
     private final Scene scene;
     Pane pane;
+    Stage stage;
 
-    public MainMenu(){
+    public MainMenu(Stage stage){
         pane = new Pane();
+        this.stage = stage;
         scene = new Scene(makePane());
     }
 
@@ -34,9 +40,18 @@ public class MainMenu {
 
         MenuItem itemExit = new MenuItem("EXIT");
         itemExit.setOnMouseClicked(event -> System.exit(0));
-
+        MenuItem newGame = new MenuItem("New Game");
+        newGame.setOnMouseClicked(mouseEvent -> {
+            String mapPath = FileChooserWrapper.getInstance().showOpenDialog(stage);
+            Game game = new Game();
+            Map map = new Map(mapPath,game);
+            GameWindow gameWindow = new GameWindow(game);
+            stage.setScene(gameWindow.getScene());
+            gameWindow.run();
+            stage.show();
+        });
         MenuBox menu = new MenuBox(
-                new MenuItem("New Game"),
+                newGame,
                 new MenuItem("Load Game"),
                 new MenuItem("Tutorial"),
                 itemExit);
