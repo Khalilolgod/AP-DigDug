@@ -29,6 +29,9 @@ public class GameWindow {
     private Pane down;
     private GameScene gameScene;
 
+    private Label timerL;
+    private Label lives;
+
     public GameWindow(Game game, Stage stage) {
         this.stage = stage;
         borderPane = new BorderPane();
@@ -54,9 +57,9 @@ public class GameWindow {
     void makeLowerPane() {
         down = new Pane();
         down.prefHeight(50);
-        Label timer = new Label("--");
-        Label lives = new Label(String.valueOf(game.getDiggerLives()));
-        HBox hBox = new HBox(timer, lives);
+        timerL = new Label("0");
+        lives = new Label(String.valueOf(game.getDiggerLives()));
+        HBox hBox = new HBox(timerL, lives);
         down.getChildren().add(hBox);
 
     }
@@ -75,6 +78,7 @@ public class GameWindow {
             Runnable updater = () -> {
                 gameScene.gridPaneUpdater();
                 game.updateGame();
+                lives.setText(String.valueOf(game.getDiggerLives()));
             };
             Runnable diggerSaver = () -> {
                 String path = FileChooserWrapper.getInstance().showSaveDialog(stage);
@@ -97,6 +101,34 @@ public class GameWindow {
         thread.setDaemon(true);
         thread.start();
 
+        Thread timer = makeTimerThread();
+        timer.setDaemon(true);
+        timer.start();
+
+    }
+
+
+    private Thread makeTimerThread() {
+        Thread timer = new Thread(() -> {
+            Runnable updater = () -> {
+                timerL.setText(String.valueOf(Integer.parseInt(timerL.getText()) + 1));
+            };
+
+            while (true) {
+                if (game.getGameState() == GameState.RUNNING) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                    }
+                    // UI update is run on the Application thread
+                    Platform.runLater(updater);
+                } else if (game.getGameState() == GameState.FINISHED) {
+                    break;
+                }
+            }
+
+        });
+        return timer;
     }
 
     Pane makeUpper() {
@@ -131,6 +163,22 @@ public class GameWindow {
 
     public Scene getScene() {
         return scene;
+    }
+
+    public Label getTimerL() {
+        return timerL;
+    }
+
+    public void setTimerL(Label timerL) {
+        this.timerL = timerL;
+    }
+
+    public Label getLives() {
+        return lives;
+    }
+
+    public void setLives(Label lives) {
+        this.lives = lives;
     }
 }
 
