@@ -7,14 +7,14 @@ import javafx.scene.shape.Rectangle;
 
 public class GameAssets {
     private static GameAssets instance = new GameAssets();
-    private final static Image digger = new Image("File:src/main/resources/assets/player_right_0.png");
-    private final static Image stone  = new Image("File:src/main/resources/assets/stone.png");
-    private final static Image tomato = new Image("File:src/main/resources/assets/tomato.png");
-    private final static Image dragon = new Image("File:src/main/resources/assets/dragon.png");
-    private static Image[] BG_BLOCKS ;
+    private final static Image DIGGER = new Image("File:src/main/resources/assets/player_right_0.png");
+    private final static Image STONE = new Image("File:src/main/resources/assets/STONE.png");
+    private final static Image TOMATO = new Image("File:src/main/resources/assets/TOMATO.png");
+    private final static Image DRAGON = new Image("File:src/main/resources/assets/DRAGON.png");
+    private static Image[] bgBLOCKS;
 
     private GameAssets() {
-        //digger = //todo Change this to ImageView
+        //DIGGER = //todo Change this to ImageView
         loadBlocks();
     }
 
@@ -23,49 +23,47 @@ public class GameAssets {
     }
 
 
-
-
-    private void loadBlocks(){
-        BG_BLOCKS = new Image[4];
+    private void loadBlocks() {
+        bgBLOCKS = new Image[4];
         try {
-            BG_BLOCKS[0] = new Image("File:src/main/resources/assets/block1.jpg");
-            BG_BLOCKS[1] = new Image("File:src/main/resources/assets/block2.jpg");
-            BG_BLOCKS[2] = new Image("File:src/main/resources/assets/block3.jpg");
-            BG_BLOCKS[3] = new Image("File:src/main/resources/assets/block4.jpg");
-        }catch (Exception e){
+            bgBLOCKS[0] = new Image("File:src/main/resources/assets/block1.jpg");
+            bgBLOCKS[1] = new Image("File:src/main/resources/assets/block2.jpg");
+            bgBLOCKS[2] = new Image("File:src/main/resources/assets/block3.jpg");
+            bgBLOCKS[3] = new Image("File:src/main/resources/assets/block4.jpg");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
     public static ImageView getDigger() {
-        return getInstance().toImageView(digger);
+        return getInstance().toImageView(DIGGER);
     }
 
-    public static Rectangle getEmpty(){
-        return new Rectangle(GraphicsConsts.CellSize,GraphicsConsts.CellSize,Color.BLACK);
+    public static Rectangle getEmpty() {
+        return new Rectangle(GraphicsConsts.getCellsize(), GraphicsConsts.getCellsize(), Color.BLACK);
     }
 
-    private ImageView toImageView(Image image){
+    private ImageView toImageView(Image image) {
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
-        imageView.setFitHeight(GraphicsConsts.CellSize);
+        imageView.setFitHeight(GraphicsConsts.getCellsize());
         return imageView;
     }
 
     public static ImageView getStone() {
-        return instance.toImageView(stone);
+        return instance.toImageView(STONE);
     }
 
     public static ImageView getTomato() {
-        return getInstance().toImageView(tomato);
+        return getInstance().toImageView(TOMATO);
     }
 
     public static ImageView getDragon() {
-        return getInstance().toImageView(dragon);
+        return getInstance().toImageView(DRAGON);
     }
 
-    public static Image[] getBgBlocks() {
-        return BG_BLOCKS;
+    public static Image[] getBgBLOCKS() {
+        return bgBLOCKS;
     }
 }

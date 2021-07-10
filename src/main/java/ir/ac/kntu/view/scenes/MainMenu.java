@@ -1,6 +1,6 @@
 package ir.ac.kntu.view.scenes;
 
-import ir.ac.kntu.FileChooserWrapper;
+import ir.ac.kntu.util.FileChooserWrapper;
 import ir.ac.kntu.model.Game;
 import ir.ac.kntu.model.Map;
 import javafx.geometry.Pos;
@@ -15,16 +15,16 @@ import javafx.stage.Stage;
 
 public class MainMenu {
     private final Scene scene;
-    Pane pane;
-    Stage stage;
+    private Pane pane;
+    private Stage stage;
 
-    public MainMenu(Stage stage){
+    public MainMenu(Stage stage) {
         pane = new Pane();
         this.stage = stage;
         scene = new Scene(makePane());
     }
 
-    Pane makePane(){
+    Pane makePane() {
 
         pane.setPrefSize(800, 600);
 
@@ -44,8 +44,8 @@ public class MainMenu {
         newGame.setOnMouseClicked(mouseEvent -> {
             String mapPath = FileChooserWrapper.getInstance().showOpenDialog(stage);
             Game game = new Game();
-            Map map = new Map(mapPath,game);
-            GameWindow gameWindow = new GameWindow(game);
+            Map map = new Map(mapPath, game);
+            GameWindow gameWindow = new GameWindow(game, stage);
             stage.setScene(gameWindow.getScene());
             gameWindow.run();
             stage.show();
@@ -61,8 +61,25 @@ public class MainMenu {
         pane.getChildren().addAll(title, menu);
         return pane;
     }
+
     public Scene getScene() {
         return scene;
+    }
+
+    public Pane getPane() {
+        return pane;
+    }
+
+    public void setPane(Pane pane) {
+        this.pane = pane;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }
 
@@ -101,12 +118,7 @@ class MenuBox extends VBox {
 
 class MenuItem extends StackPane {
     public MenuItem(String name) {
-        LinearGradient gradient = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, new Stop[] {
-                new Stop(0, Color.DARKBLUE),
-                new Stop(0.1, Color.BLACK),
-                new Stop(0.9, Color.BLACK),
-                new Stop(1, Color.DARKBLUE)
-        });
+        LinearGradient gradient = new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE, new Stop[]{new Stop(0, Color.DARKBLUE), new Stop(0.1, Color.BLACK), new Stop(0.9, Color.BLACK), new Stop(1, Color.DARKBLUE)});
 
         Rectangle bg = new Rectangle(200, 30);
         bg.setOpacity(0.4);
