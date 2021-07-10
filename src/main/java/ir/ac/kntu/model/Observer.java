@@ -14,5 +14,5 @@ public interface Observer {
      * @param changedObservable pass the changed observable object to the
      *                          observer
      */
-    void update(Observable changedObservable, Point2D oldPos , Point2D newPos);
+    void update(Observable changedObservable, Point2D oldPos, Point2D newPos);
 }

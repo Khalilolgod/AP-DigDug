@@ -33,16 +33,16 @@ public class Game implements Serializable, Observer {
         }
     }
 
-    boolean playerCollided(){
-        for(Enemy e: enemies){
-            if(e.getPos().distance(digger.getPos()) < 1){
+    boolean playerCollided() {
+        for (Enemy e : enemies) {
+            if (e.getPos().distance(digger.getPos()) < 1) {
                 return true;
             }
         }
         return false;
     }
 
-    public static Game loadGameInfo(String Filename) {
+    public static Game loadGameInfo(String filename) {
         Game game = null;
         File file = new File("student.info");
         try (FileInputStream fileInputStream = new FileInputStream(file);
@@ -80,35 +80,37 @@ public class Game implements Serializable, Observer {
         }
     }
 
-    private void playerDie(){
-        if(--diggerLives < 1){
+    private void playerDie() {
+        if (--diggerLives < 1) {
             finishGame();
         }
         playerRevival();
     }
 
     void playerRevival() {
-        this.digger.setPos(digger.initialPos);
-        map.getMap()[(int) digger.initialPos.getY()][(int) digger.initialPos.getX()] = digger;
+        this.digger.setPos(new Point2D(digger.getInitialX(), digger.getInintialY()));
+        map.getMap()[(int) digger.getInintialY()][(int) digger.getInitialX()] = digger;
     }
 
-    void finishGame(){
+    void finishGame() {
+
         this.gameState = GameState.FINISHED;
+
     }
 
     @Override
     public void update(Observable changedObservable, Point2D oldPos, Point2D newPos) {
         GameObject[][] map = this.map.getMap();
         GameObject gameObject = (GameObject) changedObservable;
-        if(this.map.getGameObject(oldPos) instanceof Digger){
-            if(playerCollided()){
+        if (this.map.getGameObject(oldPos) instanceof Digger) {
+            if (playerCollided()) {
                 playerDie();
-            }else{
+            } else {
                 map[(int) newPos.getY()][(int) newPos.getX()] = gameObject;
                 map[(int) oldPos.getY()][(int) oldPos.getX()] = null;
             }
-        }else {
-            if(playerCollided()){
+        } else {
+            if (playerCollided()) {
                 playerDie();
             }
             map[(int) newPos.getY()][(int) newPos.getX()] = gameObject;
