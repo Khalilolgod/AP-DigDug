@@ -1,4 +1,4 @@
-package ir.ac.kntu;
+package ir.ac.kntu.util;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -18,8 +18,13 @@ public class FileChooserWrapper {
         return instance;
     }
 
-    public String showOpenDialog(Stage stage){
+    public String showOpenDialog(Stage stage) {
         File selectedFile = fileChooser.showOpenDialog(stage);
+        return selectedFile.getPath();
+    }
+
+    public String showSaveDialog(Stage stage) {
+        File selectedFile = fileChooser.showSaveDialog(stage);
         return selectedFile.getPath();
     }
 }
