@@ -16,9 +16,9 @@ public class DiggerController {
     private DiggerController() {
     }
 
-    public void handlePlayerInputs(KeyCode code){
+    public void handlePlayerInputs(KeyCode code) {
         Digger digger = Map.getDigger();
-        switch (code){
+        switch (code) {
             case UP:
                 digger.move(Direction.UP);
                 break;
