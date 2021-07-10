@@ -3,20 +3,26 @@ package ir.ac.kntu.model;
 
 import javafx.geometry.Point2D;
 
-public class Digger extends GameObject implements Movable, Observable {
-    String playerName;
-    int score = 0;
-    int highScore = 0;
-    double stepSize;
-    Direction direction;
-    Observer observer;
-    final Point2D initialPos;
+import java.io.*;
 
-    Digger(Map map, Point2D pos, double stepSize , Observer observer) {
+public class Digger extends GameObject implements Movable, Observable, Serializable {
+    private String playerName;
+    private int score = 0;
+    private int highScore = 0;
+    private double stepSize;
+    private Direction direction;
+    private Observer observer;
+    private final int initialX;
+    private final int inintialY;
+    private static final long serialVersionUID = 24L;
+
+    Digger(Map map, Point2D pos, double stepSize, Observer observer) {
         super(map, pos, true);
         this.stepSize = stepSize;
         this.direction = Direction.RIGHT;
-        initialPos = pos;
+        this.initialX = (int) pos.getX();
+        this.inintialY = (int) pos.getY();
+
         this.observer = observer;
     }
 
@@ -39,7 +45,7 @@ public class Digger extends GameObject implements Movable, Observable {
     @Override
     public boolean canPass(Direction d) {
         Point2D movedPos = nextPos(d);
-        return map.isInBounds(movedPos) && (map.getGameObject(movedPos) == null || map.getGameObject(movedPos) instanceof Wall);
+        return getMap().isInBounds(movedPos) && (getMap().getGameObject(movedPos) == null || getMap().getGameObject(movedPos) instanceof Wall);
 
     }
 
@@ -57,9 +63,105 @@ public class Digger extends GameObject implements Movable, Observable {
         return nextPos(d).distance(g.getPos()) < 1;
     }
 
+    public static void saveDigger(Digger digger, String filePath) {
+        File file = new File(filePath);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file);
+             ObjectOutputStream output = new ObjectOutputStream(fileOutputStream)) {
+            try {
+                output.writeObject(digger);
+            } catch (IOException e) {
+                System.out.println("(Digger::saveDiggerInfos): " +
+                        "An error occurred while trying to save info");
+                e.printStackTrace();
+            }
+
+        } catch (IOException e) {
+            System.out.println("(Digger::saveDiggerInfos): " +
+                    "An error occurred while trying to save info");
+            e.printStackTrace();
+        }
+    }
+
+    public static Digger loadDigger(String filePath) {
+
+        File file = new File(filePath);
+        try (FileInputStream fileInputStream = new FileInputStream(file);
+             ObjectInputStream input = new ObjectInputStream(fileInputStream)) {
+
+            try {
+                //Read info for each student
+                Digger digger = (Digger) input.readObject();
+                return digger;
+            } catch (Exception e) {
+                System.out.println("Problem with some of the records in the Digger data file");
+                System.out.println(e.getMessage());
+            }
+
+        } catch (IOException e) {
+            System.out.println("No previous data for Digger has been saved.");
+        }
+        return null;
+    }
+
 
     @Override
     public void updateObserver(Point2D oldPos, Point2D newPos) {
         observer.update(this, oldPos, newPos);
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getHighScore() {
+        return highScore;
+    }
+
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
+    }
+
+    public double getStepSize() {
+        return stepSize;
+    }
+
+    public void setStepSize(double stepSize) {
+        this.stepSize = stepSize;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public Observer getObserver() {
+        return observer;
+    }
+
+    public void setObserver(Observer observer) {
+        this.observer = observer;
+    }
+
+    public int getInitialX() {
+        return initialX;
+    }
+
+    public int getInintialY() {
+        return inintialY;
     }
 }
