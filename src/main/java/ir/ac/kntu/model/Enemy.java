@@ -1,7 +1,6 @@
 package ir.ac.kntu.model;
 
 
-import javafx.geometry.Point2D;
 
 import java.io.Serializable;
 import java.util.Random;

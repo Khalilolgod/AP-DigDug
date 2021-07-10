@@ -1,8 +1,6 @@
 package ir.ac.kntu.model;
 
 
-import javafx.geometry.Point2D;
-
 import java.io.*;
 
 public class Digger extends GameObject implements Movable, Observable, Serializable {

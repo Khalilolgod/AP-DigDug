@@ -1,7 +1,5 @@
 package ir.ac.kntu.model;
 
-import javafx.geometry.Point2D;
-
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
