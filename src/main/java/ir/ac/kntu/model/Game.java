@@ -17,13 +17,10 @@ public class Game implements Serializable, Observer {
 
     private static final long serialVersionUID = 42L;
 
-
     public Game() {
         gameState = GameState.RUNNING;
         diggerLives = 3;
     }
-
-
 
     public void updateGame() {
         for (Enemy enemy : enemies) {
@@ -75,6 +72,23 @@ public class Game implements Serializable, Observer {
             map[(int) oldPos.getY()][(int) oldPos.getX()] = null;
         }
 
+    }
+
+    public void diggershoot(GameObject gameObject) {
+        Digger digger = (Digger) gameObject;
+        for (int i = 1; i <= digger.getShootingRange(); i++) {
+            Point2D bulletPos = digger.getPos().add(i, digger.getDirection());
+            if (!map.isInBounds(bulletPos)) {
+                break;
+            } else if (map.getGameObject(bulletPos) instanceof Enemy) {
+                digger.setScore(digger.getScore() + ((Enemy) map.getGameObject(bulletPos)).getDeathScore());
+                map.getEnemies().remove(map.getGameObject(bulletPos));
+                map.getMap()[(int) bulletPos.getY()][(int) bulletPos.getX()] = null;
+                break;
+            } else if (map.getGameObject(bulletPos) != null) {
+                break;
+            }
+        }
     }
 
     public Map getMap() {

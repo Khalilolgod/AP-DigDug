@@ -31,6 +31,8 @@ public class DiggerController {
             case LEFT:
                 digger.move(Direction.LEFT);
                 break;
+            case S:
+                digger.shoot();
             default:
                 break;
         }

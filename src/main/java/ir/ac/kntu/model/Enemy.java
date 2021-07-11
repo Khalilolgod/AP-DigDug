@@ -11,6 +11,7 @@ public class Enemy extends GameObject implements Movable, Observable, Serializab
     private Direction direction;
     private Observer observer;
     private Random random;
+    private int deathScore;
 
     Enemy(Map map, Point2D pos, Observer observer) {
         super(map, pos, true);
@@ -99,5 +100,13 @@ public class Enemy extends GameObject implements Movable, Observable, Serializab
 
     public void setRandom(Random random) {
         this.random = random;
+    }
+
+    public int getDeathScore() {
+        return deathScore;
+    }
+
+    public void setDeathScore(int deathScore) {
+        this.deathScore = deathScore;
     }
 }

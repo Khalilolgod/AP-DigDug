@@ -12,6 +12,7 @@ public class Digger extends GameObject implements Movable, Observable, Serializa
     private Observer observer;
     private final int initialX;
     private final int inintialY;
+    private int shootingRange = 3;
     private static final long serialVersionUID = 24L;
 
     Digger(Map map, Point2D pos, double stepSize, Observer observer) {
@@ -80,6 +81,10 @@ public class Digger extends GameObject implements Movable, Observable, Serializa
         }
     }
 
+    public void shoot(){
+        ((Game)observer).diggershoot(this);
+    }
+
     public static Digger loadDigger(String filePath) {
 
         File file = new File(filePath);
@@ -89,6 +94,7 @@ public class Digger extends GameObject implements Movable, Observable, Serializa
             try {
                 //Read info for each student
                 Digger digger = (Digger) input.readObject();
+                digger.setScore(0);
                 return digger;
             } catch (Exception e) {
                 System.out.println("Problem with some of the records in the Digger data file");
@@ -120,6 +126,7 @@ public class Digger extends GameObject implements Movable, Observable, Serializa
     }
 
     public void setScore(int score) {
+        highScore = Math.max(score, highScore);
         this.score = score;
     }
 
@@ -161,5 +168,13 @@ public class Digger extends GameObject implements Movable, Observable, Serializa
 
     public int getInintialY() {
         return inintialY;
+    }
+
+    public int getShootingRange() {
+        return shootingRange;
+    }
+
+    public void setShootingRange(int shootingRange) {
+        this.shootingRange = shootingRange;
     }
 }
