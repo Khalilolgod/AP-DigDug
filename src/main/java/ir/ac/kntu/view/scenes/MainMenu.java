@@ -89,7 +89,7 @@ public class MainMenu {
             }
             digger.setObserver(game);
         }
-        return new GameWindow(game, stage);
+        return new GameWindow(game, stage,this);
     }
 
 

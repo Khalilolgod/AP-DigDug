@@ -23,9 +23,13 @@ public class Game implements Serializable, Observer {
     }
 
     public void updateGame() {
+        if (enemies.size() < 1) {
+            gameState = GameState.FINISHED;
+        }
         for (Enemy enemy : enemies) {
             enemy.move();
         }
+
     }
 
     boolean playerCollided() {

@@ -11,10 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class GameWindow {
@@ -28,14 +25,16 @@ public class GameWindow {
     private Pane center;
     private Pane down;
     private GameScene gameScene;
+    private MainMenu mainMenu;
 
     private Label timerL;
     private Label lives;
     private Label scoreVar;
     private Label highScoreVar;
 
-    public GameWindow(Game game, Stage stage) {
+    public GameWindow(Game game, Stage stage, MainMenu mainMenu) {
         this.stage = stage;
+        this.mainMenu = mainMenu;
         borderPane = new BorderPane();
         this.game = game;
 
@@ -57,11 +56,12 @@ public class GameWindow {
     }
 
     void makeLowerPane() {
-        down = new Pane();
+        down = new GridPane();
         down.prefHeight(50);
         timerL = new Label(String.valueOf(game.getTime()));
         lives = new Label(String.valueOf(game.getDiggerLives()));
         HBox hBox = new HBox(timerL, lives);
+        hBox.setSpacing(10);
         down.getChildren().add(hBox);
 
     }
@@ -98,6 +98,11 @@ public class GameWindow {
                     Platform.runLater(updater);
                 } else if (game.getGameState() == GameState.FINISHED) {
                     Platform.runLater(diggerSaver);
+                    Platform.runLater(() -> {
+                        FinishedScene finishedScene = new FinishedScene(stage, mainMenu);
+                        stage.setScene(finishedScene.getScene());
+                        stage.show();
+                    });
                     break;
                 }
             }
@@ -115,7 +120,7 @@ public class GameWindow {
     private Thread makeTimerThread() {
         Thread timer = new Thread(() -> {
             Runnable updater = () -> {
-                game.setTime(game.getTime()+1);
+                game.setTime(game.getTime() + 1);
                 timerL.setText(String.valueOf(game.getTime()));
             };
 
@@ -158,7 +163,7 @@ public class GameWindow {
 
         upper.getChildren().add(hBox);
         hBox.setMinWidth(center.getWidth());
-        hBox.setAlignment(Pos.CENTER);
+        hBox.setSpacing(10);
         return upper;
     }
 
