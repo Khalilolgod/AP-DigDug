@@ -31,6 +31,8 @@ public class GameWindow {
 
     private Label timerL;
     private Label lives;
+    private Label scoreVar;
+    private Label highScoreVar;
 
     public GameWindow(Game game, Stage stage) {
         this.stage = stage;
@@ -78,6 +80,8 @@ public class GameWindow {
             Runnable updater = () -> {
                 gameScene.gridPaneUpdater();
                 game.updateGame();
+                scoreVar.setText(String.valueOf(game.getDigger().getScore()));
+                highScoreVar.setText(String.valueOf(game.getDigger().getHighScore()));
                 lives.setText(String.valueOf(game.getDiggerLives()));
             };
             Runnable diggerSaver = () -> {
@@ -137,14 +141,14 @@ public class GameWindow {
         upper.setPrefSize(200, 50);
         VBox upLeft = new VBox();
         Label scoreL = new Label("Score");
-        Label scoreVar = new Label("0");
+        scoreVar = new Label("0");
         upLeft.getChildren().addAll(scoreL, scoreVar);
 
         //upLeft.setAlignment(Pos.CENTER_LEFT);
 
         VBox upCenter = new VBox();
         Label highScoreL = new Label("High Score");
-        Label highScoreVar = new Label("-");
+        highScoreVar = new Label("-");
         upCenter.getChildren().addAll(highScoreL, highScoreVar);
 
         Button menuButton = new Button("#");
