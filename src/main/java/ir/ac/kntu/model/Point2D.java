@@ -113,6 +113,11 @@ public class Point2D implements Serializable {
         return add(point.getX(), point.getY());
     }
 
+    public Point2D add(int delta, Direction d) {
+        return add(d.getDelta().multiply(delta));
+    }
+
+
     /**
      * Returns a point with the specified coordinates subtracted from
      * the coordinates of this point.
