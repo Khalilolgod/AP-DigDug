@@ -26,12 +26,11 @@ public class MainMenu {
     }
 
     Pane makePane() {
-
-        pane.setPrefSize(800, 600);
-
-        ImageView img = new ImageView(new Image("File:src/main/resources/background/background2.png"));
+        ImageView img = new ImageView(new Image("File:src/main/resources/background/background3.jpg"));
         img.setPreserveRatio(true);
         img.setFitHeight(600);
+        pane.setMinSize(img.getFitWidth(), 600);
+
         pane.getChildren().add(img);
 
 
@@ -57,10 +56,17 @@ public class MainMenu {
             stage.show();
         });
 
+        MenuItem tutorial = new MenuItem("Tutorial");
+        tutorial.setOnMouseClicked(mouseEvent -> {
+            TutorialScene tutorialScene = new TutorialScene(stage,this);
+            stage.setScene(tutorialScene.getScene());
+            stage.show();
+        });
+
         MenuBox menu = new MenuBox(
                 newGame,
                 loadGame,
-                new MenuItem("Tutorial"),
+                tutorial,
                 itemExit);
         menu.setTranslateX(495);
         menu.setTranslateY(350);
